@@ -2,6 +2,57 @@
 
 <div align="center">
 
+```python
+from bilibili_api import user, sync
+from bilibili_api import Credential
+
+cred = Credential(
+    sessdata="720c1e31%2C1764791295%2C1ba5d%2A61CjBPW229R9jR1hrEHGavhvAwVsmopvmuqBfy2vXIfZu57O0W5NY30ojsL_yMDclK5kASVi1ybVBFUjZGemdLXzhnejFiZHVKQlZEMXBuTUFIaE9mVTVCUGtMRmg0TXNodTA5dXhReDZsTTN4NFNOcDFmV0dMZHNNSGExeS04bm9iSW1vaUZLa3B3IIEC",
+    bili_jct="ed7e977f28db7415c39504bb8c85d8d7",
+    buvid3="B1D34C32-FAFC-CDB5-E26C-D999EDE392AC13913infoc"
+)
+
+# 1. 解析用户UID（从链接中提取）
+user_url = "https://space.bilibili.com/481670371"
+uid = int(user_url.split("/")[-1])  # UID=481670371
+
+# 2. 获取用户实例
+u = user.User(uid, credential=cred)
+
+# 3. 获取所有投稿视频并去重
+video_list = []
+seen_avid = set()  # 使用集合记录已获取的avid，用于去重
+page_num = 1
+page_size = 50
+
+while True:
+    res = sync(u.get_videos(pn=page_num, ps=page_size))
+    vlist = res["list"]["vlist"]
+    
+    if len(vlist) == 0:
+        break  # 没有更多视频时退出循环
+    
+    for video in vlist:
+        avid = video['aid']  # 使用 aid 去重
+        if avid not in seen_avid:
+            seen_avid.add(avid)
+            video_list.append(video)
+    
+    page_num += 1
+
+# 输出结果
+print(f"总共获取 {len(video_list)} 个不重复视频")
+
+import pandas as pd
+pd.DataFrame(video_list).to_csv("视频素材.csv", index = False)
+
+import pandas as pd
+with open("dw_landscape.ps1", "w") as f:
+    f.write("\n".join(pd.read_csv("视频素材.csv").T.loc["bvid"].map(lambda x: "bbdown " + x).values.tolist()))
+
+\.dw_landscape.ps1
+```
+
 # bilibili-api
 
 [![API 数量](https://img.shields.io/badge/API%20数量-400+-blue)][api.json]
