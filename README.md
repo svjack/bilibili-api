@@ -1,9 +1,5 @@
 ![bilibili-api logo](https://raw.githubusercontent.com/Nemo2011/bilibili-api/main/design/logo.png)
 
-<div align="center">
-
-
-
 ```python
 from bilibili_api import user, sync
 from bilibili_api import Credential
@@ -54,6 +50,9 @@ with open("dw_landscape.ps1", "w") as f:
 
 \.dw_landscape.ps1
 ```
+
+<div align="center">
+
 
 # bilibili-api
 
