@@ -1,6 +1,8 @@
 ![bilibili-api logo](https://raw.githubusercontent.com/Nemo2011/bilibili-api/main/design/logo.png)
 
 ```python
+!pip install bilibili_api_python
+
 from bilibili_api import user, sync
 from bilibili_api import Credential
 
